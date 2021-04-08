@@ -21,6 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  workmanager: ^0.2.0
   shared_preferences: ^2.0.5
   flutter_config: ^1.0.8
   geolocator: ^7.0.1

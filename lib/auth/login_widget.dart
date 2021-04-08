@@ -1,4 +1,5 @@
 import 'package:dct_client/services/auth_service.dart';
+import 'package:dct_client/services/token_service.dart';
 import 'package:flutter/material.dart';
 import 'dtos/login.dto.dart';
 
@@ -36,6 +37,8 @@ class _LoginState extends State<LoginWidget> {
         );
         return;
       }
+
+      await TokenService.saveToken(response.body);
 
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return MyApp(true);

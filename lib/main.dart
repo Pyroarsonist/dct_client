@@ -1,12 +1,15 @@
 import 'package:dct_client/services/token_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_config/flutter_config.dart';
+
 import 'auth/auth_widget.dart';
 import 'home.dart';
+import 'jobs/main.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterConfig.loadEnvVariables();
+  initJobs();
 
   var tokenIsValid = await TokenService.isTokenValid();
   runApp(MyApp(tokenIsValid));

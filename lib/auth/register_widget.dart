@@ -1,4 +1,5 @@
 import 'package:dct_client/services/auth_service.dart';
+import 'package:dct_client/services/token_service.dart';
 import 'package:flutter/material.dart';
 
 import 'dtos/register.dto.dart';
@@ -50,6 +51,8 @@ class _RegisterState extends State<RegisterWidget> {
         );
         return;
       }
+
+      await TokenService.saveToken(response.body);
 
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return MyApp(true);
