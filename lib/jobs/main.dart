@@ -15,8 +15,4 @@ void initJobs() {
   Workmanager.initialize(jobDispatcher);
   Workmanager.registerPeriodicTask(SEND_GEODATA_JOB, SEND_GEODATA_JOB,
       tag: SEND_GEODATA_TAG);
-
-  Timer.periodic(SEND_GEODATA_DURATION_INTERVAL, (Timer timer) {
-    sendGeoData();
-  });
 }
