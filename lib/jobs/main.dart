@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:workmanager/workmanager.dart';
 
-import 'send-geodata/job/send-geodata.job.dart';
+import 'send-geodata.job.dart';
 import '../constants.dart';
 
 void jobDispatcher() {
