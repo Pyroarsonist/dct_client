@@ -109,9 +109,13 @@ class _MapWidgetState extends State<MapWidget> {
               heatmapId: HeatmapId("heatmap_id:$i"),
               radius: 30,
               points: _createPoints(LatLng(l.latitude, l.longitude)),
-              gradient: HeatmapGradient(
-                  colors: <Color>[Colors.green, Colors.red],
-                  startPoints: <double>[0.2, 0.8]));
+              gradient: HeatmapGradient(colors: <Color>[
+                Colors.lightGreenAccent.shade400,
+                Colors.redAccent.shade700
+              ], startPoints: <double>[
+                0.2,
+                0.9
+              ]));
 
           return circle;
         }).toSet();
@@ -134,7 +138,7 @@ class _MapWidgetState extends State<MapWidget> {
 
   List<WeightedLatLng> _createPoints(LatLng location) {
     final List<WeightedLatLng> points = <WeightedLatLng>[];
-    for (var i = -1; i <= 100; i++)
+    for (var i = -1; i <= 1; i++)
       for (var j = -1; j <= 1; j++)
         points.add(_createWeightedLatLng(
             location.latitude + i, location.longitude + j, 1));
@@ -166,7 +170,7 @@ class _MapWidgetState extends State<MapWidget> {
       //todo: refactor
       color: _resolveStatusColor(),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(12.0),
         child: GoogleMap(
           initialCameraPosition: _kGooglePlex,
           onMapCreated: (GoogleMapController controller) {
