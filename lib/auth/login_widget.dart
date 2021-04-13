@@ -12,8 +12,8 @@ class LoginWidget extends StatefulWidget {
 }
 
 class _LoginState extends State<LoginWidget> {
-  String email = '';
-  String password = '';
+  String email;
+  String password;
 
   static const SIZED_BOX_HEIGHT = 30.0;
 

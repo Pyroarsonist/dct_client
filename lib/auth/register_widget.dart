@@ -12,17 +12,17 @@ class RegisterWidget extends StatefulWidget {
 }
 
 class _RegisterState extends State<RegisterWidget> {
-  String email='';
-  String password='';
-  String name='';
-  DateTime birthDate =DateTime.now();
+  String email;
+  String password;
+  String name;
+  DateTime birthDate;
 
   static const SIZED_BOX_HEIGHT = 30.0;
 
   _selectDate(BuildContext context) async {
-    var timePicked = await showDatePicker(
+    final DateTime timePicked = await showDatePicker(
       context: context,
-      initialDate: birthDate,
+      initialDate: birthDate == null ? DateTime.now() : birthDate,
       firstDate: DateTime(2000),
       lastDate: DateTime(2025),
     );

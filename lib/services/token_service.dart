@@ -6,7 +6,7 @@ import '../utils.dart';
 
 class TokenService {
   static String _tokenKey = 'auth-token';
-  static String? _token;
+  static String _token;
 
   static Future<void> saveToken(String t) async {
     final prefs = await SharedPreferences.getInstance();
@@ -14,7 +14,7 @@ class TokenService {
     _token = t;
   }
 
-  static Future<String?> getToken() async {
+  static Future<String> getToken() async {
     if (_token != null) return _token;
     final prefs = await SharedPreferences.getInstance();
     var tokenFromPref = prefs.getString(_tokenKey);

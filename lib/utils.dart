@@ -11,6 +11,6 @@ class Utils {
 
   static void logHttpError(Response response) {
     print(
-        "Failed making request with status code ${response.statusCode}: ${response.request?.url}\nBody: ${response.body}");
+        "Failed making request with status code ${response.statusCode}: ${response.request.url}\nBody: ${response.body}");
   }
 }

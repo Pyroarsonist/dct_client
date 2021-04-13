@@ -5,6 +5,8 @@ import 'constants.dart';
 import 'geolocation/map_widget.dart';
 
 class Home extends StatefulWidget {
+  Home({Key key}) : super(key: key);
+
   @override
   _HomeState createState() => _HomeState();
 }

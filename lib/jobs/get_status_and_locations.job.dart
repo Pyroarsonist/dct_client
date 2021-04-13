@@ -6,7 +6,7 @@ import 'package:dct_client/services/geolocation_service.dart';
 import 'package:dct_client/services/token_service.dart';
 import 'package:dct_client/utils.dart';
 
-Future<GetLocationsResponseDto?> getStatusAndLocations() async {
+Future<GetLocationsResponseDto> getStatusAndLocations() async {
   var token = await TokenService.getToken();
   if (token == null) return null;
 
