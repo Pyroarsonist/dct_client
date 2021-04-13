@@ -33,8 +33,16 @@ class LocationDto {
   }
 }
 
+enum CrowdStatus { good, ok, bad }
+
+CrowdStatus resolveCrowdStatus(String status) {
+  if (status == 'good') return CrowdStatus.good;
+  if (status == 'ok') return CrowdStatus.ok;
+  return CrowdStatus.bad;
+}
+
 class GetLocationsResponseDto {
-  String status;
+  CrowdStatus status;
   List<LocationDto> locations;
 
   GetLocationsResponseDto(this.status, this.locations);
@@ -44,7 +52,7 @@ class GetLocationsResponseDto {
         .map<LocationDto>((l) => LocationDto.fromJson(l))
         .toList();
     return GetLocationsResponseDto(
-      dto['status'] as String,
+      resolveCrowdStatus(dto['status']),
       locations as List<LocationDto>,
     );
   }

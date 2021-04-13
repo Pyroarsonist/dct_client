@@ -7,6 +7,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../constants.dart';
+import 'dtos/get_locations.dto.dart';
 
 class MapWidget extends StatefulWidget {
   const MapWidget({Key key}) : super(key: key);
@@ -16,9 +17,9 @@ class MapWidget extends StatefulWidget {
 }
 
 class _MapWidgetState extends State<MapWidget> {
+  StreamSubscription<Position> _positionStreamSubscription;
   Position _position;
-
-  String _status;
+  CrowdStatus _status;
 
   //todo: refactor
   Set<Circle> _circles = {};
@@ -28,10 +29,38 @@ class _MapWidgetState extends State<MapWidget> {
 
   static CameraPosition _kGooglePlex;
 
+  Color _resolveStatusColor() {
+    //todo: check colors
+    switch (_status) {
+      case CrowdStatus.good:
+        return Colors.green;
+
+      case CrowdStatus.ok:
+        return Colors.yellow;
+
+      case CrowdStatus.bad:
+        return Colors.red;
+
+      default:
+        return Colors.red;
+    }
+  }
+
   @override
-  Widget build(BuildContext context) {
+  void dispose() {
+    if (_positionStreamSubscription != null) {
+      _positionStreamSubscription.cancel();
+      _positionStreamSubscription = null;
+    }
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
     //todo: refactor
-    Geolocator.getPositionStream(
+    _positionStreamSubscription = Geolocator.getPositionStream(
             desiredAccuracy: LocationAccuracy.best,
             intervalDuration: SEND_GEODATA_DURATION_INTERVAL)
         .listen((Position position) async {
@@ -47,9 +76,8 @@ class _MapWidgetState extends State<MapWidget> {
           var l = entry.value;
           var i = entry.key;
 
-          var circleId = CircleId("circle_id:$i");
           var circle = Circle(
-            circleId: circleId,
+            circleId: CircleId("circle_id:$i"),
             strokeColor: Colors.red,
             fillColor: Colors.orange,
             strokeWidth: 2,
@@ -74,7 +102,10 @@ class _MapWidgetState extends State<MapWidget> {
       //
       // controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
     });
+  }
 
+  @override
+  Widget build(BuildContext context) {
     _kGooglePlex = CameraPosition(
       target:
           //todo: fix null
@@ -91,7 +122,7 @@ class _MapWidgetState extends State<MapWidget> {
     return new Scaffold(
         body: Container(
       //todo: refactor
-      color: _status == 'good' ? Colors.green : Colors.red,
+      color: _resolveStatusColor(),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: GoogleMap(
