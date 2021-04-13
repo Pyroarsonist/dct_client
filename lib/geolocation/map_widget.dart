@@ -10,16 +10,14 @@ import '../constants.dart';
 import 'dtos/get_locations.dto.dart';
 
 class MapWidget extends StatefulWidget {
-  const MapWidget({Key key}) : super(key: key);
-
   @override
   _MapWidgetState createState() => _MapWidgetState();
 }
 
 class _MapWidgetState extends State<MapWidget> {
-  StreamSubscription<Position> _positionStreamSubscription;
-  Position _position;
-  CrowdStatus _status;
+  StreamSubscription<Position>? _positionStreamSubscription;
+  Position? _position;
+  CrowdStatus? _status;
 
   //todo: refactor
   Set<Circle> _circles = {};
@@ -27,7 +25,7 @@ class _MapWidgetState extends State<MapWidget> {
   //todo: refactor map controller
   Completer<GoogleMapController> _controller = Completer();
 
-  static CameraPosition _kGooglePlex;
+  static CameraPosition? _kGooglePlex;
 
   Color _resolveStatusColor() {
     //todo: check colors
@@ -49,7 +47,7 @@ class _MapWidgetState extends State<MapWidget> {
   @override
   void dispose() {
     if (_positionStreamSubscription != null) {
-      _positionStreamSubscription.cancel();
+      _positionStreamSubscription!.cancel();
       _positionStreamSubscription = null;
     }
     super.dispose();
@@ -64,10 +62,10 @@ class _MapWidgetState extends State<MapWidget> {
             desiredAccuracy: LocationAccuracy.best,
             intervalDuration: SEND_GEODATA_DURATION_INTERVAL)
         .listen((Position position) async {
-      if (position == null) return;
-
       sendGeoData();
       var dto = await getStatusAndLocations();
+      if (dto == null) return;
+
       setState(() {
         _position = position;
         _status = dto.status;
@@ -106,18 +104,16 @@ class _MapWidgetState extends State<MapWidget> {
 
   @override
   Widget build(BuildContext context) {
-    _kGooglePlex = CameraPosition(
-      target:
-          //todo: fix null
-          LatLng(_position?.latitude ?? 0, _position?.longitude ?? 0),
-      zoom: 15,
-    );
-
     if (_position == null) {
       return CircularProgressIndicator(
         backgroundColor: Colors.blue,
       );
     }
+
+    _kGooglePlex = CameraPosition(
+      target: LatLng(_position!.latitude, _position!.longitude),
+      zoom: 15,
+    );
 
     return new Scaffold(
         body: Container(
@@ -126,7 +122,7 @@ class _MapWidgetState extends State<MapWidget> {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: GoogleMap(
-          initialCameraPosition: _kGooglePlex,
+          initialCameraPosition: _kGooglePlex!,
           onMapCreated: (GoogleMapController controller) {
             _controller.complete(controller);
           },
