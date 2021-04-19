@@ -39,6 +39,7 @@ dependencies:
   cupertino_icons: ^1.0.0
   logger: ^1.0.0
   wakelock: ^0.5.1
+  form_field_validator: ^1.1.0
 
 dev_dependencies:
   lint: ^1.5.3

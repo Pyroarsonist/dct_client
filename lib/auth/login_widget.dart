@@ -1,6 +1,7 @@
 import 'package:dct_client/services/auth_service.dart';
 import 'package:dct_client/services/token_service.dart';
 import 'package:flutter/material.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 
 import '../logger.dart';
 import '../routes.dart';
@@ -13,16 +14,28 @@ class LoginWidget extends StatefulWidget {
 }
 
 class _LoginState extends State<LoginWidget> {
-  String email;
-  String password;
+  final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
-  static const sizedBoxHeight = 30.0;
+  static const _sizedBoxHeight = 30.0;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   Future<void> _login(BuildContext context) async {
     try {
+      if (!_formKey.currentState.validate()) {
+        return;
+      }
+
       final dto = LoginDto(
-        email,
-        password,
+        _emailController.text,
+        _passwordController.text,
       );
 
       final response = await AuthService.login(dto);
@@ -42,7 +55,6 @@ class _LoginState extends State<LoginWidget> {
       await TokenService.saveToken(response.body);
 
       Navigator.pushReplacementNamed(context, homeRoute);
-
     } catch (e) {
       logger.e(e);
     }
@@ -52,58 +64,53 @@ class _LoginState extends State<LoginWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              //todo: make own logo
-              const FlutterLogo(
-                size: 200,
-              ),
-              const SizedBox(height: sizedBoxHeight),
-              TextField(
+        child: Form(
+          key: _formKey,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                //todo: make own logo
+                const FlutterLogo(
+                  size: 200,
+                ),
+                const SizedBox(height: _sizedBoxHeight),
+                TextFormField(
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Email',
+                        hintText: 'Enter your email'),
+                    autofocus: true,
+                    controller: _emailController,
+                    validator: EmailValidator(errorText: 'Invalid email')),
+
+                const Divider(),
+                TextFormField(
+                  obscureText: true,
                   decoration: const InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: 'Email',
-                      hintText: 'Enter your email'),
-                  onChanged: (text) {
-                    if (text != email) {
-                      setState(() {
-                        email = text;
-                      });
-                    }
-                  }),
-              const Divider(),
-              TextField(
-                obscureText: true,
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Password',
-                    hintText: 'Enter your password'),
-                onChanged: (text) {
-                  if (text != password) {
-                    setState(() {
-                      password = text;
-                    });
-                  }
-                },
-              ),
-              const Divider(),
+                      labelText: 'Password',
+                      hintText: 'Enter your password'),
+                  controller: _passwordController,
+                  validator: RequiredValidator(errorText: 'Invalid password'),
+                ),
+                const Divider(),
 
-              ElevatedButton(
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.blue)),
-                onPressed: () => _login(context),
-                child: const Text(
-                  'Login',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
+                ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.blue)),
+                  onPressed: () => _login(context),
+                  child: const Text(
+                    'Login',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
