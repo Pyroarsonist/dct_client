@@ -25,7 +25,7 @@ class LocationDto {
 
   LocationDto(this.latitude, this.longitude);
 
-  factory LocationDto.fromJson(Map<String, dynamic> dto) {
+  factory LocationDto.fromJson(dynamic dto) {
     return LocationDto(
       dto['latitude'] as double,
       dto['longitude'] as double,
@@ -47,9 +47,9 @@ class GetLocationsResponseDto {
 
   GetLocationsResponseDto(this.status, this.locations);
 
-  factory GetLocationsResponseDto.fromJson(Map<String, dynamic> dto) {
+  factory GetLocationsResponseDto.fromJson(dynamic dto) {
     final locations = dto['locations']
-        .map<LocationDto>((l) => LocationDto.fromJson(l as Map<String, dynamic>))
+        .map<LocationDto>((l) => LocationDto.fromJson(l))
         .toList();
     return GetLocationsResponseDto(
       resolveCrowdStatus(dto['status'] as String),

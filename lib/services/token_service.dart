@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:dct_client/services/navigation_service.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

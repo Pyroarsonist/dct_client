@@ -11,8 +11,7 @@ import 'package:flutter/foundation.dart';
 import '../routes.dart';
 
 GetLocationsResponseDto _decodeResponse(String str) {
-  return GetLocationsResponseDto.fromJson(
-      jsonDecode(str) as Map<String, dynamic>);
+  return GetLocationsResponseDto.fromJson(jsonDecode(str));
 }
 
 Future<GetLocationsResponseDto> getStatusAndLocations() async {

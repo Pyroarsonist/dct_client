@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:dct_client/auth/dtos/login.dto.dart';
 import 'package:dct_client/auth/dtos/register.dto.dart';
 import 'package:dct_client/services/token_service.dart';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
 import '../config.dart';
@@ -27,7 +26,7 @@ class AuthService {
     return response;
   }
 
-  static Future<void> logout(BuildContext context) async {
+  static Future<void> logout() async {
     await TokenService.removeToken();
     await NavigationService.nonReturningNavigateTo(initialRoute);
   }

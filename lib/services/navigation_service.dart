@@ -1,11 +1,4 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import '../config.dart';
-import '../utils.dart';
 
 class NavigationService {
   static final GlobalKey<NavigatorState> navigatorKey =
