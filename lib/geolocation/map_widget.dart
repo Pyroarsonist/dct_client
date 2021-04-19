@@ -67,12 +67,12 @@ class _MapWidgetState extends State<MapWidget> {
     //todo: refactor
     _positionStreamSubscription = Geolocator.getPositionStream(
             desiredAccuracy: LocationAccuracy.best,
-            intervalDuration: SEND_GEODATA_DURATION_INTERVAL)
+            intervalDuration: sendGeodataDurationInverval)
         .listen((Position position) async {
       if (position == null) return;
 
       sendGeoData();
-      var dto = await getStatusAndLocations();
+      final dto = await getStatusAndLocations();
       setState(() {
         _position = position;
         _status = dto.status;
@@ -94,8 +94,8 @@ class _MapWidgetState extends State<MapWidget> {
         // }).toSet();
 
         _heatmaps = dto.locations.asMap().entries.map((entry) {
-          var l = entry.value;
-          var i = entry.key;
+          final l = entry.value;
+          final i = entry.key;
 
           // var circle = Heatmap(
           //     heatmapId: HeatmapId("heatmap_id:$i"),
@@ -105,14 +105,14 @@ class _MapWidgetState extends State<MapWidget> {
           //         colors: <Color>[Colors.green, Colors.red],
           //         startPoints: <double>[0.2, 0.8]));
 
-          var circle = Heatmap(
-              heatmapId: HeatmapId("heatmap_id:$i"),
+          final circle = Heatmap(
+              heatmapId: HeatmapId('heatmap_id:$i'),
               radius: 30,
               points: _createPoints(LatLng(l.latitude, l.longitude)),
               gradient: HeatmapGradient(colors: <Color>[
                 Colors.lightGreenAccent.shade400,
                 Colors.redAccent.shade700
-              ], startPoints: <double>[
+              ], startPoints: const <double>[
                 0.2,
                 0.9
               ]));
@@ -138,10 +138,12 @@ class _MapWidgetState extends State<MapWidget> {
 
   List<WeightedLatLng> _createPoints(LatLng location) {
     final List<WeightedLatLng> points = <WeightedLatLng>[];
-    for (var i = -1; i <= 1; i++)
-      for (var j = -1; j <= 1; j++)
+    for (var i = -1; i <= 1; i++) {
+      for (var j = -1; j <= 1; j++) {
         points.add(_createWeightedLatLng(
             location.latitude + i, location.longitude + j, 1));
+      }
+    }
 
     return points;
   }
@@ -156,16 +158,16 @@ class _MapWidgetState extends State<MapWidget> {
       target:
           //todo: fix null
           LatLng(_position?.latitude ?? 0, _position?.longitude ?? 0),
-      zoom: DEFAULT_MAPS_ZOOM,
+      zoom: defaultMapsZoom,
     );
 
     if (_position == null) {
-      return CircularProgressIndicator(
+      return const CircularProgressIndicator(
         backgroundColor: Colors.blue,
       );
     }
 
-    return new Scaffold(
+    return Scaffold(
         body: Container(
       //todo: refactor
       color: _resolveStatusColor(),
@@ -176,10 +178,7 @@ class _MapWidgetState extends State<MapWidget> {
           onMapCreated: (GoogleMapController controller) {
             _controller.complete(controller);
           },
-          compassEnabled: true,
-          mapType: MapType.normal,
           myLocationEnabled: true,
-          myLocationButtonEnabled: true,
           circles: _circles,
           heatmaps: _heatmaps,
         ),

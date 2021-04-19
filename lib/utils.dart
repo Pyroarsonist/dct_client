@@ -1,5 +1,7 @@
 import 'package:http/http.dart';
 
+import 'logger.dart';
+
 class Utils {
   static bool isStatusCodeOk(int statusCode) {
     return statusCode >= 200 && statusCode < 300;
@@ -10,7 +12,7 @@ class Utils {
   }
 
   static void logHttpError(Response response) {
-    print(
-        "Failed making request with status code ${response.statusCode}: ${response.request.url}\nBody: ${response.body}");
+    logger.e(
+        'Failed making request with status code ${response.statusCode}: ${response.request.url}\nBody: ${response.body}');
   }
 }

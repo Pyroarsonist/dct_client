@@ -2,9 +2,10 @@ import 'package:dct_client/services/auth_service.dart';
 import 'package:dct_client/services/token_service.dart';
 import 'package:flutter/material.dart';
 
-import 'dtos/register.dto.dart';
-import '../main.dart';
+import '../logger.dart';
+import '../routes.dart';
 import '../utils.dart';
+import 'dtos/register.dto.dart';
 
 class RegisterWidget extends StatefulWidget {
   @override
@@ -17,32 +18,33 @@ class _RegisterState extends State<RegisterWidget> {
   String name;
   DateTime birthDate;
 
-  static const SIZED_BOX_HEIGHT = 30.0;
+  static const sizedBoxHeight = 30.0;
 
-  _selectDate(BuildContext context) async {
+  Future<void> _selectDate(BuildContext context) async {
     final DateTime timePicked = await showDatePicker(
       context: context,
-      initialDate: birthDate == null ? DateTime.now() : birthDate,
+      initialDate: birthDate ?? DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime(2025),
     );
-    if (timePicked != null && timePicked != birthDate)
+    if (timePicked != null && timePicked != birthDate) {
       setState(() {
         birthDate = timePicked;
       });
+    }
   }
 
-  _register(BuildContext context) async {
+  Future<void> _register(BuildContext context) async {
     try {
-      var dto =
-          new RegisterDto(email, password, name, birthDate.toIso8601String());
+      final dto =
+          RegisterDto(email, password, name, birthDate.toIso8601String());
 
       final response = await AuthService.register(dto);
 
       if (!Utils.isStatusCodeOk(response.statusCode)) {
         //todo: make snackbar good
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text(
               'Failed to register',
               style: TextStyle(color: Colors.red),
@@ -54,11 +56,9 @@ class _RegisterState extends State<RegisterWidget> {
 
       await TokenService.saveToken(response.body);
 
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return MyApp(true);
-      }));
+      Navigator.pushReplacementNamed(context, homeRoute);
     } catch (e) {
-      print(e);
+      logger.e(e);
     }
   }
 
@@ -72,78 +72,79 @@ class _RegisterState extends State<RegisterWidget> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               //todo: make own logo
-              FlutterLogo(
+              const FlutterLogo(
                 size: 200,
               ),
-              SizedBox(height: SIZED_BOX_HEIGHT),
+              const SizedBox(height: sizedBoxHeight),
               TextField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Email',
                       hintText: 'Enter your email'),
                   onChanged: (text) {
                     if (text != email) {
-                      this.setState(() {
+                      setState(() {
                         email = text;
                       });
                     }
                   }),
-              Divider(),
+              const Divider(),
               TextField(
                 obscureText: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Password',
                     hintText: 'Enter your password'),
                 onChanged: (text) {
                   if (text != password) {
-                    this.setState(() {
+                    setState(() {
                       password = text;
                     });
                   }
                 },
               ),
-              Divider(),
-              TextField(
+              const Divider(),
+              const TextField(
                 obscureText: true,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Repeat password',
                     hintText: 'Repeat your password'),
               ),
-              Divider(),
+              const Divider(),
               TextField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Name',
                     hintText: 'Enter your name'),
                 onChanged: (text) {
                   if (text != name) {
-                    this.setState(() {
+                    setState(() {
                       name = text;
                     });
                   }
                 },
               ),
-              Divider(),
+              const Divider(),
 
               // picker
 
               Text(
                 birthDate == null
-                    ? "Pick date"
-                    : "${birthDate.day}/${birthDate.month}/${birthDate.year}",
-                style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
+                    ? 'Pick date'
+                    : '${birthDate.day}/${birthDate.month}/${birthDate.year}',
+                style:
+                    const TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
               ),
-              SizedBox(
-                height: SIZED_BOX_HEIGHT,
+              const SizedBox(
+                height: sizedBoxHeight,
               ),
               ElevatedButton(
                 style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all(Colors.lightBlueAccent)),
                 onPressed: () => _selectDate(context),
-                child: Text(
+                child: const Text(
                   'Select birth date',
                   style: TextStyle(
                     color: Colors.black,
@@ -156,7 +157,7 @@ class _RegisterState extends State<RegisterWidget> {
                     backgroundColor:
                         MaterialStateProperty.all(Colors.lightGreen)),
                 onPressed: () => _register(context),
-                child: Text(
+                child: const Text(
                   'Register',
                   style: TextStyle(
                     color: Colors.black,

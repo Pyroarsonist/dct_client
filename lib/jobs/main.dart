@@ -1,18 +1,19 @@
 import 'dart:async';
+
 import 'package:workmanager/workmanager.dart';
 
-import 'send-geodata.job.dart';
 import '../constants.dart';
+import 'send-geodata.job.dart';
 
 void jobDispatcher() {
   Workmanager.executeTask((task, inputData) {
-    if (task == SEND_GEODATA_JOB) sendGeoData();
+    if (task == sendGeodataJob) sendGeoData();
     return Future.value(true);
   });
 }
 
 void initJobs() {
   Workmanager.initialize(jobDispatcher);
-  Workmanager.registerPeriodicTask(SEND_GEODATA_JOB, SEND_GEODATA_JOB,
-      tag: SEND_GEODATA_TAG);
+  Workmanager.registerPeriodicTask(sendGeodataJob, sendGeodataJob,
+      tag: sendGeodataTag);
 }

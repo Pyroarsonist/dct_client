@@ -1,19 +1,19 @@
-import 'package:dct_client/auth/login_widget.dart';
-import 'package:dct_client/auth/register_widget.dart';
 import 'package:flutter/material.dart';
+
+import '../routes.dart';
 
 class AuthWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.lime,
-        body: Container(
+        body: SizedBox(
             width: double.infinity,
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 300, horizontal: 0),
+              padding: const EdgeInsets.symmetric(vertical: 300),
               child: Column(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.traffic_sharp,
                     size: 40,
                     color: Colors.blueGrey,
@@ -23,18 +23,13 @@ class AuthWidget extends StatelessWidget {
                     style: Theme.of(context).textTheme.headline5,
                   ),
                   ElevatedButton(
-                    child: Text('Login'),
-                    onPressed: () => Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return LoginWidget();
-                    })),
+                    onPressed: () => Navigator.pushNamed(context, loginRoute),
+                    child: const Text('Login'),
                   ),
                   ElevatedButton(
-                    child: Text('Register'),
-                    onPressed: () => Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return RegisterWidget();
-                    })),
+                    onPressed: () =>
+                        Navigator.pushNamed(context, registerRoute),
+                    child: const Text('Register'),
                   ),
                 ],
               ),

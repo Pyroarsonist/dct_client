@@ -4,14 +4,12 @@ import 'package:flutter/material.dart';
 import 'constants.dart';
 import 'geolocation/map_widget.dart';
 
-class Home extends StatefulWidget {
-  Home({Key key}) : super(key: key);
-
+class HomeWidget extends StatefulWidget {
   @override
-  _HomeState createState() => _HomeState();
+  _HomeWidgetState createState() => _HomeWidgetState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeWidgetState extends State<HomeWidget> {
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -25,7 +23,7 @@ class _HomeState extends State<Home> {
           child: ListView(
             padding: EdgeInsets.zero,
             children: [
-              DrawerHeader(
+              const DrawerHeader(
                 decoration: BoxDecoration(
                   color: Colors.blue,
                 ),
@@ -37,21 +35,21 @@ class _HomeState extends State<Home> {
                   ),
                 ),
               ),
-              ListTile(
+              const ListTile(
                 leading: Icon(Icons.message),
                 title: Text('Messages'),
               ),
-              ListTile(
+              const ListTile(
                 leading: Icon(Icons.account_circle),
                 title: Text('Profile'),
               ),
-              ListTile(
+              const ListTile(
                 leading: Icon(Icons.settings),
                 title: Text('Settings'),
               ),
               ListTile(
-                leading: Icon(Icons.logout),
-                title: Text('Logout'),
+                leading: const Icon(Icons.logout),
+                title: const Text('Logout'),
                 onTap: () => AuthService.logout(context),
               )
             ],
@@ -60,10 +58,10 @@ class _HomeState extends State<Home> {
         appBar: AppBar(
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
-          title: Text(APP_TITLE),
+          title: const Text(appTitle),
           backgroundColor: Colors.blue,
         ),
-        body: Center(
+        body: const Center(
             // Center is a layout widget. It takes a single child and positions it
             // in the middle of the parent.
             child: MapWidget()));

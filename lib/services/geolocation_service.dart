@@ -9,12 +9,12 @@ import '../config.dart';
 class GeolocationService {
   static Future<Response> sendGeoData(SendGeoDataDto dto, String token) async {
 
-    var url = "${Config.getBackendHost()}/locations";
+    final url = '${Config.getBackendHost()}/locations';
     final response = await post(Uri.parse(url),
         body: jsonEncode(dto),
         headers: {
           'content-type': 'application/json',
-          'Authorization': "Bearer $token"
+          'Authorization': 'Bearer $token'
         });
 
     return response;
@@ -22,12 +22,12 @@ class GeolocationService {
 
   static Future<Response> getStatusAndLocations(
       GetLocationsRequestDto dto, String token) async {
-    var query = Uri(queryParameters: dto.toQuery()).query;
-    var url = "${Config.getBackendHost()}/locations?$query";
+    final query = Uri(queryParameters: dto.toQuery()).query;
+    final url = '${Config.getBackendHost()}/locations?$query';
 
     final response = await get(Uri.parse(url), headers: {
       'content-type': 'application/json',
-      'Authorization': "Bearer $token"
+      'Authorization': 'Bearer $token'
     });
 
     return response;

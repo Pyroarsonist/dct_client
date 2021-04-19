@@ -1,10 +1,11 @@
 import 'package:dct_client/services/auth_service.dart';
 import 'package:dct_client/services/token_service.dart';
 import 'package:flutter/material.dart';
-import 'dtos/login.dto.dart';
 
-import '../main.dart';
+import '../logger.dart';
+import '../routes.dart';
 import '../utils.dart';
+import 'dtos/login.dto.dart';
 
 class LoginWidget extends StatefulWidget {
   @override
@@ -15,11 +16,11 @@ class _LoginState extends State<LoginWidget> {
   String email;
   String password;
 
-  static const SIZED_BOX_HEIGHT = 30.0;
+  static const sizedBoxHeight = 30.0;
 
-  _login(BuildContext context) async {
+  Future<void> _login(BuildContext context) async {
     try {
-      var dto = new LoginDto(
+      final dto = LoginDto(
         email,
         password,
       );
@@ -28,7 +29,7 @@ class _LoginState extends State<LoginWidget> {
       if (!Utils.isStatusCodeOk(response.statusCode)) {
         //todo: make snackbar good
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text(
               'Failed to login',
               style: TextStyle(color: Colors.red),
@@ -40,11 +41,10 @@ class _LoginState extends State<LoginWidget> {
 
       await TokenService.saveToken(response.body);
 
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return MyApp(true);
-      }));
+      Navigator.pushReplacementNamed(context, homeRoute);
+
     } catch (e) {
-      print(e);
+      logger.e(e);
     }
   }
 
@@ -58,44 +58,44 @@ class _LoginState extends State<LoginWidget> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               //todo: make own logo
-              FlutterLogo(
+              const FlutterLogo(
                 size: 200,
               ),
-              SizedBox(height: SIZED_BOX_HEIGHT),
+              const SizedBox(height: sizedBoxHeight),
               TextField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Email',
                       hintText: 'Enter your email'),
                   onChanged: (text) {
                     if (text != email) {
-                      this.setState(() {
+                      setState(() {
                         email = text;
                       });
                     }
                   }),
-              Divider(),
+              const Divider(),
               TextField(
                 obscureText: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Password',
                     hintText: 'Enter your password'),
                 onChanged: (text) {
                   if (text != password) {
-                    this.setState(() {
+                    setState(() {
                       password = text;
                     });
                   }
                 },
               ),
-              Divider(),
+              const Divider(),
 
               ElevatedButton(
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.blue)),
                 onPressed: () => _login(context),
-                child: Text(
+                child: const Text(
                   'Login',
                   style: TextStyle(
                     color: Colors.black,

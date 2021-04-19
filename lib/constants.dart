@@ -1,7 +1,7 @@
-const SEND_GEODATA_JOB = 'send-geodata';
-const SEND_GEODATA_TAG = 'send-geodata-tag';
+const sendGeodataJob = 'send-geodata';
+const sendGeodataTag = 'send-geodata-tag';
 //todo: uncomment
-// const SEND_GEODATA_DURATION_INTERVAL = const Duration(seconds: 15);
-const SEND_GEODATA_DURATION_INTERVAL = const Duration(seconds: 4);
-const APP_TITLE = "Dangerous crowds tracker";
-const DEFAULT_MAPS_ZOOM = 17.5;
+// const sendGeodataDurationInverval = const Duration(seconds: 15);
+const sendGeodataDurationInverval = const Duration(seconds: 4);
+const appTitle = "Dangerous crowds tracker";
+const defaultMapsZoom = 17.5;

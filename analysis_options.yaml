@@ -1,0 +1,11 @@
+include: package:lint/analysis_options.yaml
+
+linter:
+  rules:
+    prefer_single_quotes: true
+
+    always_put_required_named_parameters_first: false
+
+    avoid_classes_with_only_static_members: false
+
+    join_return_with_assignment: false

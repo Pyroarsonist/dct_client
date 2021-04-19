@@ -48,11 +48,11 @@ class GetLocationsResponseDto {
   GetLocationsResponseDto(this.status, this.locations);
 
   factory GetLocationsResponseDto.fromJson(Map<String, dynamic> dto) {
-    var locations = dto['locations']
-        .map<LocationDto>((l) => LocationDto.fromJson(l))
+    final locations = dto['locations']
+        .map<LocationDto>((l) => LocationDto.fromJson(l as Map<String, dynamic>))
         .toList();
     return GetLocationsResponseDto(
-      resolveCrowdStatus(dto['status']),
+      resolveCrowdStatus(dto['status'] as String),
       locations as List<LocationDto>,
     );
   }
