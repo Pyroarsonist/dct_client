@@ -4,6 +4,7 @@ import 'package:flutter_config/flutter_config.dart';
 import 'jobs/main.dart';
 import 'logger.dart';
 import 'routes.dart';
+import 'services/navigation_service.dart';
 
 Future<void> main() async {
   logger.v('Starting app');
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       initialRoute: initialRoute,
       routes: routes,
+      navigatorKey: NavigationService.navigatorKey,
       theme: ThemeData(
         primarySwatch: Colors.deepOrange,
         visualDensity: VisualDensity.adaptivePlatformDensity,

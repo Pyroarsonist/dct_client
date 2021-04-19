@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:dct_client/services/navigation_service.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -27,8 +30,8 @@ class TokenService {
     if (token == null) return false;
     final url = '${Config.getBackendHost()}/auth';
     final response = await get(Uri.parse(url), headers: {
-      'content-type': 'application/json',
-      'Authorization': 'Bearer $token'
+      HttpHeaders.contentTypeHeader: 'application/json',
+      HttpHeaders.authorizationHeader: 'Bearer $token'
     });
     if (Utils.isStatusCodeOk(response.statusCode)) {
       return true;

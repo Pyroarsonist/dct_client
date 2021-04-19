@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dct_client/geolocation/dtos/get_locations.dto.dart';
 import 'package:dct_client/geolocation/dtos/send_geodata.dto.dart';
@@ -13,8 +14,8 @@ class GeolocationService {
     final response = await post(Uri.parse(url),
         body: jsonEncode(dto),
         headers: {
-          'content-type': 'application/json',
-          'Authorization': 'Bearer $token'
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.authorizationHeader: 'Bearer $token'
         });
 
     return response;
@@ -26,8 +27,8 @@ class GeolocationService {
     final url = '${Config.getBackendHost()}/locations?$query';
 
     final response = await get(Uri.parse(url), headers: {
-      'content-type': 'application/json',
-      'Authorization': 'Bearer $token'
+      HttpHeaders.contentTypeHeader: 'application/json',
+      HttpHeaders.authorizationHeader: 'Bearer $token'
     });
 
     return response;
