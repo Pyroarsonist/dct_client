@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:dct_client/geolocation/dtos/get_locations.dto.dart';
-import 'package:dct_client/geolocation/geolocation.dart';
-import 'package:dct_client/services/geolocation_service.dart';
+import 'package:dct_client/location/dtos/get_locations.dto.dart';
+import 'package:dct_client/location/location.dart';
+import 'package:dct_client/services/location_service.dart';
 import 'package:dct_client/services/navigation_service.dart';
 import 'package:dct_client/services/token_service.dart';
 import 'package:dct_client/utils.dart';

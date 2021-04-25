@@ -31,11 +31,12 @@ class _RegisterState extends State<RegisterWidget> {
   }
 
   Future<void> _selectDate(BuildContext context) async {
+    const maxHumanLifeInYears = 150;
     final DateTime timePicked = await showDatePicker(
       context: context,
       initialDate: _birthDate ?? DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2025),
+      firstDate: DateTime(DateTime.now().year - maxHumanLifeInYears),
+      lastDate: DateTime.now(),
     );
     if (timePicked != null && timePicked != _birthDate) {
       setState(() {

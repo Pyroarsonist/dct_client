@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:dct_client/jobs/get_status_and_locations.job.dart';
 import 'package:dct_client/jobs/send-geodata.job.dart';
+import 'package:dct_client/logger.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -11,7 +12,9 @@ import 'package:google_maps_flutter_heatmap/google_maps_flutter_heatmap.dart';
 import 'package:wakelock/wakelock.dart';
 
 import '../constants.dart';
+import '../push_notifications.dart';
 import 'dtos/get_locations.dto.dart';
+import 'enums/crowd_status_enum.dart';
 
 class MapWidget extends StatefulWidget {
   const MapWidget({Key key}) : super(key: key);
@@ -25,11 +28,9 @@ class _MapWidgetState extends State<MapWidget> {
   Position _position;
   CrowdStatus _status;
 
-  //todo: refactor
-  Set<Heatmap> _heatmaps = {};
+  final Set<Heatmap> _heatmaps = {};
 
-  //todo: refactor
-  Set<Circle> _circles = {};
+  final Set<Circle> _circles = {};
 
   //todo: refactor map controller
   Completer<GoogleMapController> _controller = Completer();
@@ -69,15 +70,7 @@ class _MapWidgetState extends State<MapWidget> {
       final l = entry.value;
       final i = entry.key;
 
-      // var circle = Heatmap(
-      //     heatmapId: HeatmapId("heatmap_id:$i"),
-      //     radius: 20,
-      //     points: _createPoints(LatLng(l.latitude, l.longitude)),
-      //     gradient: HeatmapGradient(
-      //         colors: <Color>[Colors.green, Colors.red],
-      //         startPoints: <double>[0.2, 0.8]));
-
-      final circle = Heatmap(
+      final heatmap = Heatmap(
           heatmapId: HeatmapId('heatmap_id:$i'),
           radius: 30,
           points: _createPoints(LatLng(l.latitude, l.longitude)),
@@ -89,8 +82,18 @@ class _MapWidgetState extends State<MapWidget> {
             0.9
           ]));
 
-      return circle;
+      return heatmap;
     }).toSet();
+  }
+
+  Future<void> _sendNotification(CrowdStatus newStatus) async {
+    try {
+      if (_status != null && newStatus != _status) {
+        await scheduleNotification('Crowd status changed!');
+      }
+    } catch (e) {
+      logger.e(e);
+    }
   }
 
   Future<void> _geodataListener(Position position) async {
@@ -100,28 +103,23 @@ class _MapWidgetState extends State<MapWidget> {
     final dto = await getStatusAndLocations();
     if (dto == null) return;
 
+    await _sendNotification(dto.status);
+
     final heatmaps = await compute(_createHeatmapsFromLocations, dto.locations);
 
     setState(() {
       _position = position;
       _status = dto.status;
-      _heatmaps = heatmaps;
 
-      // _circles = dto.locations.asMap().entries.map((entry) {
-      //   var l = entry.value;
-      //   var i = entry.key;
-      //
-      //   var circle = Circle(
-      //     circleId: CircleId("circle_id:$i"),
-      //     strokeColor: Colors.red,
-      //     fillColor: Colors.orange,
-      //     strokeWidth: 2,
-      //     center: LatLng(l.latitude, l.longitude),
-      //     radius: 15,
-      //   );
-      //
-      //   return circle;
-      // }).toSet();
+      _heatmaps.clear();
+      _heatmaps.addAll(heatmaps);
+
+      _circles.clear();
+      _circles.add(Circle(
+          strokeColor: Colors.blue,
+          center: LatLng(position.latitude, position.longitude),
+          radius: dto.radius,
+          circleId: CircleId('radius-circle')));
     });
 
     // //todo: refactor
@@ -142,6 +140,12 @@ class _MapWidgetState extends State<MapWidget> {
   void initState() {
     super.initState();
 
+    _kGooglePlex = CameraPosition(
+      target:
+          //todo: fix null
+          LatLng(_position?.latitude ?? 0, _position?.longitude ?? 0),
+      zoom: defaultMapsZoom,
+    );
     Wakelock.enable();
     //todo: refactor
     _positionStreamSubscription = Geolocator.getPositionStream(
@@ -169,17 +173,9 @@ class _MapWidgetState extends State<MapWidget> {
 
   @override
   Widget build(BuildContext context) {
-    _kGooglePlex = CameraPosition(
-      target:
-          //todo: fix null
-          LatLng(_position?.latitude ?? 0, _position?.longitude ?? 0),
-      zoom: defaultMapsZoom,
-    );
-
     if (_position == null) {
       return const CircularProgressIndicator(
-        backgroundColor: Colors.blue,
-      );
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.blue));
     }
 
     return Scaffold(

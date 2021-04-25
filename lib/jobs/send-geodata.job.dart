@@ -1,6 +1,6 @@
-import 'package:dct_client/geolocation/geolocation.dart';
-import 'package:dct_client/geolocation/dtos/send_geodata.dto.dart';
-import 'package:dct_client/services/geolocation_service.dart';
+import 'package:dct_client/location/location.dart';
+import 'package:dct_client/location/dtos/send_geodata.dto.dart';
+import 'package:dct_client/services/location_service.dart';
 import 'package:dct_client/services/navigation_service.dart';
 import 'package:dct_client/services/token_service.dart';
 import 'package:dct_client/utils.dart';

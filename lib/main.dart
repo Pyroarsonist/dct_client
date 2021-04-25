@@ -3,6 +3,7 @@ import 'package:flutter_config/flutter_config.dart';
 
 import 'jobs/main.dart';
 import 'logger.dart';
+import 'push_notifications.dart';
 import 'routes.dart';
 import 'services/navigation_service.dart';
 
@@ -11,6 +12,7 @@ Future<void> main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterConfig.loadEnvVariables();
+  await initPushNotifications();
   initJobs();
 
   runApp(MyApp());

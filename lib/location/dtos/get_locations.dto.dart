@@ -1,3 +1,5 @@
+import 'package:dct_client/location/enums/crowd_status_enum.dart';
+
 class GetLocationsRequestDto {
   double latitude;
   double longitude;
@@ -27,19 +29,18 @@ class LocationDto {
 
   factory LocationDto.fromJson(dynamic dto) {
     return LocationDto(
-      dto['latitude'] as double,
-      dto['longitude'] as double,
+      (dto['latitude'] as num).toDouble(),
+      (dto['longitude'] as num).toDouble(),
     );
   }
 }
 
-enum CrowdStatus { good, ok, bad }
-
 class GetLocationsResponseDto {
   CrowdStatus status;
   List<LocationDto> locations;
+  double radius;
 
-  GetLocationsResponseDto(this.status, this.locations);
+  GetLocationsResponseDto(this.status, this.locations, this.radius);
 
   static CrowdStatus resolveCrowdStatus(String status) {
     if (status == 'good') return CrowdStatus.good;
@@ -54,6 +55,7 @@ class GetLocationsResponseDto {
     return GetLocationsResponseDto(
       resolveCrowdStatus(dto['status'] as String),
       locations as List<LocationDto>,
+      (dto['radius'] as num).toDouble(),
     );
   }
 }

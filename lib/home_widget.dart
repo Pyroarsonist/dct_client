@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'constants.dart';
 import 'custom_app_bar.dart';
 import 'drawer_child_widget.dart';
-import 'geolocation/map_widget.dart';
+import 'location/map_widget.dart';
 
 class HomeWidget extends StatefulWidget {
   @override

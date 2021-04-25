@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:dct_client/geolocation/dtos/get_locations.dto.dart';
-import 'package:dct_client/geolocation/dtos/send_geodata.dto.dart';
+import 'package:dct_client/location/dtos/get_locations.dto.dart';
+import 'package:dct_client/location/dtos/send_geodata.dto.dart';
 import 'package:http/http.dart';
 
 import '../config.dart';
