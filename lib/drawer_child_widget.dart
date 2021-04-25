@@ -46,6 +46,13 @@ class DrawerChildWidget extends StatelessWidget {
           },
         ),
         ListTile(
+          leading: const Icon(Icons.warning_amber_outlined),
+          title: const Text('Health'),
+          onTap: () {
+            NavigationService.nonReturningNavigateTo(healthRoute);
+          },
+        ),
+        ListTile(
           leading: const Icon(Icons.logout),
           title: const Text('Logout'),
           onTap: () => AuthService.logout(),

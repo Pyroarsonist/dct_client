@@ -108,7 +108,7 @@ class _ProfileEditState extends State<ProfileEditWidget> {
 
   @override
   Widget build(BuildContext context) {
-    const divider = SizedBox(
+    const hDivider = SizedBox(
       height: sizedBoxHeight,
     );
 
@@ -119,9 +119,7 @@ class _ProfileEditState extends State<ProfileEditWidget> {
         padding: const EdgeInsets.symmetric(horizontal: 30),
         child: ListView(
           children: [
-            const SizedBox(
-              height: sizedBoxHeight,
-            ),
+            hDivider,
             TextFormField(
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
@@ -130,7 +128,7 @@ class _ProfileEditState extends State<ProfileEditWidget> {
               controller: _emailController,
               enabled: false,
             ),
-            divider,
+            hDivider,
             TextFormField(
               decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -139,7 +137,7 @@ class _ProfileEditState extends State<ProfileEditWidget> {
               controller: _nameController,
               validator: RequiredValidator(errorText: 'Invalid name'),
             ),
-            divider,
+            hDivider,
 
             // date picker
 
@@ -152,7 +150,7 @@ class _ProfileEditState extends State<ProfileEditWidget> {
                     const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
             ),
-            divider,
+            hDivider,
             ElevatedButton(
               style: ButtonStyle(
                   backgroundColor:

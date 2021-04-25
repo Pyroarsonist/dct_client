@@ -35,17 +35,17 @@ class LocationDto {
 
 enum CrowdStatus { good, ok, bad }
 
-CrowdStatus resolveCrowdStatus(String status) {
-  if (status == 'good') return CrowdStatus.good;
-  if (status == 'ok') return CrowdStatus.ok;
-  return CrowdStatus.bad;
-}
-
 class GetLocationsResponseDto {
   CrowdStatus status;
   List<LocationDto> locations;
 
   GetLocationsResponseDto(this.status, this.locations);
+
+  static CrowdStatus resolveCrowdStatus(String status) {
+    if (status == 'good') return CrowdStatus.good;
+    if (status == 'ok') return CrowdStatus.ok;
+    return CrowdStatus.bad;
+  }
 
   factory GetLocationsResponseDto.fromJson(dynamic dto) {
     final locations = dto['locations']
