@@ -6,7 +6,7 @@ Future<void> initPushNotifications() async {
       FlutterLocalNotificationsPlugin();
 
   const AndroidInitializationSettings initializationSettingsAndroid =
-      AndroidInitializationSettings('@mipmap/ic_launcher');
+      AndroidInitializationSettings('@drawable/app_icon');
 
   const InitializationSettings initializationSettings = InitializationSettings(
     android: initializationSettingsAndroid,

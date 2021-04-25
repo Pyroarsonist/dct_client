@@ -53,7 +53,6 @@ class _HealthEditState extends State<HealthEditWidget> {
       final response = await HealthService.updateHealth(dto);
 
       if (!Utils.isStatusCodeOk(response.statusCode)) {
-        //todo: make snackbar good
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text(
@@ -67,7 +66,6 @@ class _HealthEditState extends State<HealthEditWidget> {
     } catch (e) {
       logger.e(e);
 
-      //todo: make snackbar good
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(

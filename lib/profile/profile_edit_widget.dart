@@ -80,7 +80,6 @@ class _ProfileEditState extends State<ProfileEditWidget> {
       final response = await ProfileService.updateProfile(dto);
 
       if (!Utils.isStatusCodeOk(response.statusCode)) {
-        //todo: make snackbar good
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text(
@@ -94,7 +93,6 @@ class _ProfileEditState extends State<ProfileEditWidget> {
     } catch (e) {
       logger.e(e);
 
-      //todo: make snackbar good
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(

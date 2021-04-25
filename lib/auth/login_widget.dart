@@ -40,7 +40,6 @@ class _LoginState extends State<LoginWidget> {
 
       final response = await AuthService.login(dto);
       if (!Utils.isStatusCodeOk(response.statusCode)) {
-        //todo: make snackbar good
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text(

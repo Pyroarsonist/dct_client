@@ -17,7 +17,7 @@ import 'dtos/get_locations.dto.dart';
 import 'enums/crowd_status_enum.dart';
 
 class MapWidget extends StatefulWidget {
-  const MapWidget({Key key}) : super(key: key);
+  const MapWidget();
 
   @override
   _MapWidgetState createState() => _MapWidgetState();
@@ -32,13 +32,7 @@ class _MapWidgetState extends State<MapWidget> {
 
   final Set<Circle> _circles = {};
 
-  //todo: refactor map controller
-  Completer<GoogleMapController> _controller = Completer();
-
-  static CameraPosition _kGooglePlex;
-
   Color _resolveStatusColor() {
-    //todo: check colors
     switch (_status) {
       case CrowdStatus.good:
         return Colors.green;
@@ -97,6 +91,7 @@ class _MapWidgetState extends State<MapWidget> {
   }
 
   Future<void> _geodataListener(Position position) async {
+    if (!mounted) return;
     if (position == null) return;
 
     sendGeoData();
@@ -121,33 +116,13 @@ class _MapWidgetState extends State<MapWidget> {
           radius: dto.radius,
           circleId: CircleId('radius-circle')));
     });
-
-    // //todo: refactor
-    //   final GoogleMapController controller = await _controller.future;
-    //
-    //   var cameraPosition = CameraPosition(
-    //     target: LatLng(
-    //       position.latitude,
-    //       position.longitude,
-    //     ),
-    //     zoom: DEFAULT_MAPS_ZOOM,
-    //   );
-    //
-    //   controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
   }
 
   @override
   void initState() {
     super.initState();
 
-    _kGooglePlex = CameraPosition(
-      target:
-          //todo: fix null
-          LatLng(_position?.latitude ?? 0, _position?.longitude ?? 0),
-      zoom: defaultMapsZoom,
-    );
     Wakelock.enable();
-    //todo: refactor
     _positionStreamSubscription = Geolocator.getPositionStream(
             desiredAccuracy: LocationAccuracy.best,
             intervalDuration: sendGeodataDurationInverval)
@@ -180,15 +155,14 @@ class _MapWidgetState extends State<MapWidget> {
 
     return Scaffold(
         body: Container(
-      //todo: refactor
       color: _resolveStatusColor(),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: GoogleMap(
-          initialCameraPosition: _kGooglePlex,
-          onMapCreated: (GoogleMapController controller) {
-            _controller.complete(controller);
-          },
+          initialCameraPosition: CameraPosition(
+            target: LatLng(_position.latitude, _position.longitude),
+            zoom: defaultMapsZoom,
+          ),
           myLocationEnabled: true,
           circles: _circles,
           heatmaps: _heatmaps,

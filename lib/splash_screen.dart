@@ -22,9 +22,8 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            //todo: change logo
-              image: AssetImage('assets/images/splash_screen_logo.jpg'),
-              fit: BoxFit.cover),
+              image: AssetImage('assets/images/app_icon.png'),
+              fit: BoxFit.contain),
         ),
       ),
     );

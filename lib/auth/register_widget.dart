@@ -57,7 +57,6 @@ class _RegisterState extends State<RegisterWidget> {
       final response = await AuthService.register(dto);
 
       if (!Utils.isStatusCodeOk(response.statusCode)) {
-        //todo: make snackbar good
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text(
@@ -75,7 +74,6 @@ class _RegisterState extends State<RegisterWidget> {
     } catch (e) {
       logger.e(e);
 
-      //todo: make snackbar good
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
