@@ -1,7 +1,7 @@
 class GetProfileDto {
-  String email;
-  String name;
-  DateTime birthDate;
+  final String email;
+  final String name;
+  final DateTime birthDate;
 
   GetProfileDto(this.email, this.name, this.birthDate);
 

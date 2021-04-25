@@ -1,6 +1,6 @@
 class UpdateProfileDto {
-  String name;
-  String birthDate;
+  final String name;
+  final String birthDate;
 
   UpdateProfileDto(this.name, this.birthDate);
 

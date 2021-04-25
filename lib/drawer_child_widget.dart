@@ -3,12 +3,13 @@ import 'package:dct_client/services/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 
+import 'constants.dart';
 import 'routes.dart';
 
 class DrawerChildWidget extends StatelessWidget {
-  final String header;
+  final String _header;
 
-  const DrawerChildWidget(this.header);
+  const DrawerChildWidget([this._header = appTitle]);
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +23,10 @@ class DrawerChildWidget extends StatelessWidget {
               color: Colors.blue,
             ),
             child: Text(
-              header,
+              _header,
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 24,
+                fontSize: 22,
               ),
             ),
           ),
@@ -34,14 +35,14 @@ class DrawerChildWidget extends StatelessWidget {
           leading: const Icon(Icons.map_rounded),
           title: const Text('Map'),
           onTap: () {
-            NavigationService.navigateTo(homeRoute);
+            NavigationService.nonReturningNavigateTo(homeRoute);
           },
         ),
         ListTile(
           leading: const Icon(Icons.account_circle),
           title: const Text('Profile'),
           onTap: () {
-            NavigationService.navigateTo(profileRoute);
+            NavigationService.nonReturningNavigateTo(profileRoute);
           },
         ),
         ListTile(
