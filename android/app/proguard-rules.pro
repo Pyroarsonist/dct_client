@@ -1,0 +1,1 @@
+-keep class com.gmail.velikiydan.dct_client.BuildConfig { *; }

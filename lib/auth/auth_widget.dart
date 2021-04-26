@@ -1,3 +1,4 @@
+import 'package:dct_client/constants.dart';
 import 'package:flutter/material.dart';
 
 import '../routes.dart';
@@ -10,16 +11,19 @@ class AuthWidget extends StatelessWidget {
         body: SizedBox(
             width: double.infinity,
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 300),
+              padding: const EdgeInsets.symmetric(vertical: 200),
               child: Column(
                 children: [
-                  const Icon(
-                    Icons.traffic_sharp,
-                    size: 40,
-                    color: Colors.blueGrey,
+                  Container(
+                    height: 200,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/images/app_icon.png'),
+                      ),
+                    ),
                   ),
                   Text(
-                    'Dangerous crowds tracker',
+                    appTitle,
                     style: Theme.of(context).textTheme.headline5,
                   ),
                   ElevatedButton(

@@ -56,6 +56,15 @@ class _LoginState extends State<LoginWidget> {
       Navigator.pushReplacementNamed(context, homeRoute);
     } catch (e) {
       logger.e(e);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Try again later',
+            style: TextStyle(color: Colors.red),
+          ),
+        ),
+      );
     }
   }
 

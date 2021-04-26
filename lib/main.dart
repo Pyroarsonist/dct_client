@@ -1,3 +1,5 @@
+import 'package:dct_client/config.dart';
+import 'package:dct_client/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_config/flutter_config.dart';
 
@@ -12,6 +14,7 @@ Future<void> main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterConfig.loadEnvVariables();
+  Config.ensureVariables();
   await initPushNotifications();
   initJobs();
 
@@ -23,12 +26,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: appTitle,
       initialRoute: initialRoute,
       routes: routes,
       navigatorKey: NavigationService.navigatorKey,
       theme: ThemeData(
-        primarySwatch: Colors.deepOrange,
+        primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
     );
