@@ -1,3 +1,4 @@
+import 'package:dct_client/profile/enums/sex_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 
@@ -21,6 +22,7 @@ class _ProfileEditState extends State<ProfileEditWidget> {
   final _emailController = TextEditingController();
   final _nameController = TextEditingController();
   DateTime _birthDate;
+  Sex _sex;
 
   static const sizedBoxHeight = 30.0;
 
@@ -43,6 +45,7 @@ class _ProfileEditState extends State<ProfileEditWidget> {
     _emailController.text = profile.email;
     _nameController.text = profile.name;
     _birthDate = profile.birthDate;
+    _sex = profile.sex;
   }
 
   @override
@@ -75,7 +78,7 @@ class _ProfileEditState extends State<ProfileEditWidget> {
       }
 
       final dto =
-          UpdateProfileDto(_nameController.text, _birthDate.toIso8601String());
+          UpdateProfileDto(_nameController.text, _birthDate.toIso8601String(), _sex);
 
       final response = await ProfileService.updateProfile(dto);
 
@@ -134,6 +137,31 @@ class _ProfileEditState extends State<ProfileEditWidget> {
               controller: _nameController,
               validator: RequiredValidator(errorText: 'Invalid name'),
             ),
+            hDivider,
+            Row(children: [
+              const Text(
+                'Sex',
+                style: TextStyle(fontSize: 24),
+              ),
+              const SizedBox(
+                width: 20,
+              ),
+              DropdownButton<Sex>(
+                value: _sex,
+                icon: const Icon(Icons.arrow_downward),
+                onChanged: (Sex newValue) {
+                  setState(() {
+                    _sex = newValue;
+                  });
+                },
+                items: Sex.values.map<DropdownMenuItem<Sex>>((Sex value) {
+                  return DropdownMenuItem<Sex>(
+                    value: value,
+                    child: Text(value.name),
+                  );
+                }).toList(),
+              ),
+            ]),
             hDivider,
 
             // date picker

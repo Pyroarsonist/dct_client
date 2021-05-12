@@ -17,6 +17,7 @@ class _LoginState extends State<LoginWidget> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool _passwordVisible = false;
 
   static const _sizedBoxHeight = 30.0;
 
@@ -95,11 +96,25 @@ class _LoginState extends State<LoginWidget> {
 
                 const Divider(),
                 TextFormField(
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Password',
-                      hintText: 'Enter your password'),
+                  obscureText: !_passwordVisible,
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    labelText: 'Password',
+                    hintText: 'Enter your password',
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _passwordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: Theme.of(context).primaryColorDark,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _passwordVisible = !_passwordVisible;
+                        });
+                      },
+                    ),
+                  ),
                   controller: _passwordController,
                   validator: RequiredValidator(errorText: 'Invalid password'),
                 ),

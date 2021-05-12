@@ -1,3 +1,4 @@
+import 'package:dct_client/profile/enums/sex_enum.dart';
 import 'package:dct_client/services/auth_service.dart';
 import 'package:dct_client/services/token_service.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,9 @@ class _RegisterState extends State<RegisterWidget> {
   final _passwordController = TextEditingController();
   final _nameController = TextEditingController();
   DateTime _birthDate;
+  Sex _sex;
+  bool _passwordVisible = false;
+  bool _repeatedPasswordVisible = false;
 
   static const sizedBoxHeight = 30.0;
 
@@ -52,7 +56,7 @@ class _RegisterState extends State<RegisterWidget> {
       }
 
       final dto = RegisterDto(_nameController.text, _emailController.text,
-          _passwordController.text, _birthDate.toIso8601String());
+          _passwordController.text, _birthDate.toIso8601String(), _sex);
 
       final response = await AuthService.register(dto);
 
@@ -111,21 +115,50 @@ class _RegisterState extends State<RegisterWidget> {
                 ),
                 const Divider(),
                 TextFormField(
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Password',
-                      hintText: 'Enter your password'),
+                  obscureText: !_passwordVisible,
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    labelText: 'Password',
+                    hintText: 'Enter your password',
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _passwordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: Theme.of(context).primaryColorDark,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _passwordVisible = !_passwordVisible;
+                        });
+                      },
+                    ),
+                  ),
                   controller: _passwordController,
                   validator: RequiredValidator(errorText: 'Invalid password'),
                 ),
                 const Divider(),
                 TextFormField(
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Repeat password',
-                        hintText: 'Repeat your password'),
+                    obscureText: !_repeatedPasswordVisible,
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
+                      labelText: 'Repeat password',
+                      hintText: 'Repeat your password',
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _repeatedPasswordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Theme.of(context).primaryColorDark,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _repeatedPasswordVisible =
+                                !_repeatedPasswordVisible;
+                          });
+                        },
+                      ),
+                    ),
                     validator: (val) {
                       if (val != _passwordController.text) {
                         return 'Passwords Not Match';
@@ -141,6 +174,31 @@ class _RegisterState extends State<RegisterWidget> {
                   controller: _nameController,
                   validator: RequiredValidator(errorText: 'Invalid name'),
                 ),
+                const Divider(),
+                Row(children: [
+                  const Text(
+                    'Sex',
+                    style: TextStyle(fontSize: 24),
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  DropdownButton<Sex>(
+                    value: _sex,
+                    icon: const Icon(Icons.arrow_downward),
+                    onChanged: (Sex newValue) {
+                      setState(() {
+                        _sex = newValue;
+                      });
+                    },
+                    items: Sex.values.map<DropdownMenuItem<Sex>>((Sex value) {
+                      return DropdownMenuItem<Sex>(
+                        value: value,
+                        child: Text(value.name),
+                      );
+                    }).toList(),
+                  ),
+                ]),
                 const Divider(),
 
                 // date picker
